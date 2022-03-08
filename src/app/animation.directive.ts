@@ -2,20 +2,23 @@ import {
   ChangeDetectorRef,
   Directive,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  ViewContainerRef,
+  Output,
+  ViewContainerRef
 } from '@angular/core';
 import { Animation } from '@ionic/angular';
 import { fromEvent, Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[appAnimation]',
+  selector: '[appAnimation]'
 })
 export class AnimationDirective implements OnInit, OnDestroy {
   @Input('appAnimation') private animation: Animation;
+  @Output() private destroy: EventEmitter<null> = new EventEmitter();
   private destroy$ = new Subject<void>();
 
   public constructor(
@@ -31,6 +34,7 @@ export class AnimationDirective implements OnInit, OnDestroy {
   }
 
   public async ngOnInit(): Promise<void> {
+    console.log('init');
     const element = this.elementRef.nativeElement;
     this.animation.addElement(element);
     await this.animateIn();
@@ -55,6 +59,8 @@ export class AnimationDirective implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    console.log('destroy');
+    this.destroy.emit();
     this.destroy$.next();
     this.destroy$.complete();
   }
