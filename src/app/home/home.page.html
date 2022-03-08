@@ -1,0 +1,16 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> Animation directive </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="toggleShow()">toggle animation</ion-button>
+  <div
+    style="height: 200px; background: red"
+    [appAnimation]="fadeInTopAnimation"
+    *appNgIfAnimated="show"
+  >
+    test
+  </div>
+</ion-content>
